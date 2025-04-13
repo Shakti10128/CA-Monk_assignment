@@ -17,7 +17,7 @@ const Result = () => {
 
   const isUserAnsCorrect = (correctAns: string[], userSelectedAns: string[]): boolean => {
     // if the length is not matching return false, no need further checking
-    if (correctAns.length !== userSelectedAns.length) return false;
+    if (correctAns?.length !== userSelectedAns?.length) return false;
     // else will check the order or userSelectedAnswer
     return correctAns.every((ans, idx) => ans === userSelectedAns[idx]);
   };
@@ -27,8 +27,8 @@ const Result = () => {
   }
 
   const totalScore = () => {
-    return questions.reduce((acc, question, index) => {
-      if (isUserAnsCorrect(question.correctAnswer, finalScore[index])) {
+    return questions?.reduce((acc, question, index) => {
+      if (isUserAnsCorrect(question?.correctAnswer, finalScore[index])) {
         return acc + 1;
       } else {
         return acc;
@@ -63,21 +63,32 @@ const Result = () => {
             <HiArrowLeft className="cursor-pointer h-5 w-5"
             onClick={()=> navigate("/")}
             />
-          </div>
+      </div>
       <div className="flex flex-col justify-center items-center h-full w-full md:w-[50%] mx-auto">
-        <div className={`h-full flex-col w-full flex justify-between items-center ${totalScore() < 5 ? "text-red-500" : "text-green-600"}`}>
-          <div className="mt-10">
-            <div className={`border-4 h-40 w-40 rounded-full flex flex-col justify-center items-center p-6
-              ${totalScore() < 5 ? "border-red-500" : "bg-green-600"}`}>
-            <h1 className="text-4xl font-semibold">
-              {totalScore()}
-            </h1>
-            <p className="font-semibold">
-              Overall score
+          <div className={`h-full flex-col w-full flex justify-between items-center ${totalScore() < 5 ? "text-red-500" : "text-green-600"}`}>
+            <div className="mt-10">
+              <div className={`border-4 h-40 w-40 rounded-full flex flex-col justify-center items-center p-6
+                ${totalScore() < 5 ? "border-red-500" : "border-green-600"}`}>
+              <h1 className="text-4xl font-semibold">
+                {totalScore()}
+              </h1>
+              <p className="font-semibold">
+                Overall score
+              </p>
+              </div>
+          </div>
+      </div>
+          <div className="my-10 flex flex-col justify-center items-center mx-5">
+            <p>
+            While you correctly formed several sentences, there are a couple of areas where improvement is needed. Pay close attention to sentence structure and word placement to ensure clarity and correctness. Review your responses below for more details.
             </p>
-            </div>
-        </div>
-        </div>
+
+            <button className=" mt-10 border-2 border-blue-800 rounded-md text-blue-800 bg-white px-10 py-2 font-medium cursor-pointer"
+            onClick={()=> navigate("/")}
+            >
+              Go to Dashboard
+            </button>
+          </div>
 
         {/* question progress */}
 
@@ -86,8 +97,8 @@ const Result = () => {
           {questions.map((question,index)=>{
             return <FeedbackQestion
                       currentQuestionNumber={index}
-                      isAttempt={finalScore[index].length !== 0}
-                      isUserAnsCorrect={isUserAnsCorrect(question.correctAnswer,finalScore[index])}
+                      isAttempt={finalScore[index]?.length !== 0}
+                      isUserAnsCorrect={isUserAnsCorrect(question?.correctAnswer,finalScore[index])}
                       question={question}
                       totalQuestions={totalQuestions()}
                       userSelectedOptions={finalScore[index]}

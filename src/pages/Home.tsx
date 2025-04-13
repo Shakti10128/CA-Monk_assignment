@@ -1,9 +1,18 @@
 import { MdEditNote } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { clearPreviousUserResponse } from "../utils/submitResponse";
 
 const Home = () => {
 
   const navigate = useNavigate();
+
+  // the json-server was not working good for me so i just used sessionStorage
+
+  const testHandler = ()=>{
+    // clearing the previous user response from the session storage
+    clearPreviousUserResponse();
+    navigate("/test");
+  }
 
   return (
     <div className="h-screen w-screen lg:w-[70%] mx-auto">
@@ -53,7 +62,7 @@ const Home = () => {
           Back
         </button>
         <button className="bg-blue-700 text-white px-8 md:px-14 py-2 rounded-lg hover:bg-blue-600 cursor-pointer transition"
-        onClick={()=> navigate("/test")}
+        onClick={testHandler}
         >
           Start
         </button>

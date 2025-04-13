@@ -17,8 +17,8 @@ const FeedbackQestion:FC<FeedbackQestionProps> = ({
 }) => {
 
     function getOriginalQestion(qst: string, options: string[]): string {
-        options.forEach(option => {
-          const index: number = qst.indexOf(BLANK);
+        options?.forEach(option => {
+          const index: number = qst?.indexOf(BLANK);
           if (index !== -1) { // Ensure we find BLANK in the string
             qst = qst.replace(BLANK, option); // Replacing BLANK with the option
           }
