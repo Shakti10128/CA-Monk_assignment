@@ -3,6 +3,7 @@ import { IQuestion } from "../../pages/Test"
 import Button from "./Button";
 import { HiArrowRight } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
+import { finalScore, UserResponse } from "../../utils/userResponses";
 
 interface QuestionProps{
     currentQuestion:IQuestion;
@@ -15,7 +16,7 @@ const BLANK:string = "_____________";
 
 const Question:FC<QuestionProps> = ({currentQuestion,currentQuestionIndex,totalQustions,nextQuestionHandler}) => {
     const [currQuestion,setCurrQuestion] = useState<IQuestion |null>(null)
-    const [selectOptions, setSelectedOptions] = useState<string[]>([]);
+    const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
     const [unselectOptions, setUnSelectedOptions] = useState<string[]>([]);
 
     const navigate = useNavigate();
@@ -37,10 +38,25 @@ const Question:FC<QuestionProps> = ({currentQuestion,currentQuestionIndex,totalQ
         setUnSelectedOptions(prev => [...prev, option]);
     };
 
+    const questionSubmitHandlerAndFetchNextQuestion = () => {
+        // Create a response object with user-selected options
+        const finalAns:UserResponse = {
+            ...currentQuestion,
+            userSelectedOptions:selectedOptions
+        }
+    
+        // Push the response to finalScore array
+        finalScore.push(finalAns);
+        console.log(finalScore);
+    
+        // Fetch the next question or jump to the next question
+        nextQuestionHandler();
+    }
+
     useEffect(() => {
         setCurrQuestion(currentQuestion);
         setUnSelectedOptions(currentQuestion?.options || []);
-        setSelectedOptions([]); // 👈 CLEAR previous selected options
+        setSelectedOptions([]); // CLEAR previous selected options for the next question
     }, [currentQuestionIndex,setCurrQuestion,currentQuestion]);
 
   return (
@@ -65,7 +81,7 @@ const Question:FC<QuestionProps> = ({currentQuestion,currentQuestionIndex,totalQ
                     filledQuestion.push(<span key={`part-${index}`}>{part}</span>);
 
                     if (index < parts.length - 1) {
-                        const selected = selectOptions[index];
+                        const selected = selectedOptions[index];
 
                         filledQuestion.push(
                             <span
@@ -105,7 +121,7 @@ const Question:FC<QuestionProps> = ({currentQuestion,currentQuestionIndex,totalQ
                     ? "text-gray-400 border-gray-400 cursor-not-allowed" 
                     : "bg-blue-600 text-white cursor-pointer"}`}
                 disabled={unselectOptions.length > 0}
-                onClick={nextQuestionHandler}
+                onClick={questionSubmitHandlerAndFetchNextQuestion}
                 >
                 <HiArrowRight 
                     className={`${unselectOptions.length > 0 ? 'opacity-50' : ''}`}

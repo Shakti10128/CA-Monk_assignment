@@ -1,16 +1,19 @@
 import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { finalScore, UserResponse } from "../../utils/userResponses";
+import { IQuestion } from "../../pages/Test";
 
 interface TopbarProps {
   totalQustions: number;
   currentQuestionIndex: number;
+  currQuestion:IQuestion
   nextQuestionHandler:()=>void;
 }
 
 const Topbar: FC<TopbarProps> = ({
   currentQuestionIndex,
   totalQustions,
-  nextQuestionHandler
+  nextQuestionHandler,currQuestion
 }) => {
   const [timeLeft, setTimeLeft] = useState(30); // 30 seconds
   const navigate = useNavigate();
@@ -23,8 +26,14 @@ const Topbar: FC<TopbarProps> = ({
 
   useEffect(() => {
     if (timeLeft < 0) {
+        // if the timer left user has not given any response for the currenQuestion
+        const finalAns:UserResponse = {
+          ...currQuestion,
+          userSelectedOptions:[]
+        };
+        finalScore.push(finalAns);
+
         if(currentQuestionIndex+1 < totalQustions){
-            // show next question if there is next question
             nextQuestionHandler();
             // reset the timer again for the next question if there is
             setTimeLeft(30);

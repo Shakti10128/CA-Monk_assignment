@@ -13,8 +13,6 @@ const QuestionScreen:FC<QuestionScreenProps> = ({questions}) => {
 
 
   const nextQuestionHandler = ()=>{
-    // if we are at last question show user to finish button or after timer expire user automatically will
-    // redirect to result page
     if(currentQuestionIndex < questions.length) {
         setCurrentQuestionIndex(prev => prev+1);
     }
@@ -25,8 +23,8 @@ const QuestionScreen:FC<QuestionScreenProps> = ({questions}) => {
     <div className="h-screen w-screen flex justify-center items-center">
         <div className="flex flex-col justify-center bg-white rounded-md items-center md:min-h-[70vh] w-full md:w-[70%] px-2 py-10 md:p-10">
             {/* top bar */}
-            <Topbar currentQuestionIndex={currentQuestionIndex} totalQustions={questions.length} nextQuestionHandler={nextQuestionHandler}/>
-
+            <Topbar currentQuestionIndex={currentQuestionIndex} totalQustions={questions.length} nextQuestionHandler={nextQuestionHandler} currQuestion={questions[currentQuestionIndex]}/>
+            {/* displaying the question */}
             <Question currentQuestion={questions[currentQuestionIndex]} currentQuestionIndex={currentQuestionIndex} totalQustions={questions.length} nextQuestionHandler={nextQuestionHandler}/>
         </div>
     </div>

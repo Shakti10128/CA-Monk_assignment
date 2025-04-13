@@ -15,13 +15,21 @@ export interface IQuestion{
 const Test = () => {
   const [loading,setLoading] = useState<boolean>(false);
   const [data,setData] = useState<IQuestion[]|[]>([]);
-  console.log(data);
+
+  // 1: for smaller case when the data is small without containing images or video, just simple text this
+  // approach is good, coz i don't want loading in my app between question switching
+  // 
+  // 2: if there are images or videos it will not be a good choice to fetch all data once
+  // - if the number of question is high, then according to me, we can do batch fetching, means
+  //   we can fetch set of question 5-10, 
+  // - or we can just prefetch the prev & next question for the current
+  // question, to avoid the loading face, and user will get the smooth experience
+
 
   const fetchData = async()=>{
     setLoading(true);
     axios.get("http://localhost:3000/data")
     .then((response)=>{
-        console.log(response.data);
         setData(response.data.questions);
     })
     .catch((error:unknown)=>{
