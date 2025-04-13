@@ -23,7 +23,7 @@ const Test = () => {
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await axios.get(backendUrl);
+      const response = await axios.get(`${backendUrl}`);
       setData(response.data?.data?.questions);
     } catch (error) {
       console.log("error while fetching the questions", error);
