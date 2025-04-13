@@ -40,7 +40,7 @@ const Test = () => {
   }
 
   return (
-    <div>
+    <div className="h-screen">
       {data.length > 0 && (
         <QuestionScreen questions={data} />
       )}

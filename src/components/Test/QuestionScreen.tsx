@@ -49,7 +49,7 @@ const QuestionScreen: FC<QuestionScreenProps> = memo(({ questions }) => {
   }, [handleTimerExpiration]);
 
   return (
-    <div className="h-screen w-screen flex justify-center items-center">
+    <div className="h-full w-full my-auto flex justify-center items-center">
       <div className="flex flex-col justify-center bg-white rounded-md items-center md:min-h-[70vh] w-full md:w-[70%] px-2 py-10 md:p-10">
         <Topbar 
           currentQuestionIndex={currentQuestionIndex} totalQuestions={questions.length}
