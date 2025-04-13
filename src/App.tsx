@@ -7,7 +7,7 @@ import Result from "./pages/Result"
 function App() {
 
   return (
-    <div className="bg-gray-100">
+    <div>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home/>}/>

@@ -1,20 +1,21 @@
 import { FC, useEffect, useState } from "react";
-import { IQuestion } from "../../pages/Test"
 import Button from "./Button";
 import { HiArrowRight } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
-import { finalScore, UserResponse } from "../../utils/userResponses";
+import { IQuestion } from "../../pages/Test";
+import  submitResponse from "../../utils/submitResponse";
 
 interface QuestionProps{
     currentQuestion:IQuestion;
-    totalQustions: number;
+    totalQuestions: number;
     currentQuestionIndex: number;
     nextQuestionHandler:()=>void;
 }
 
+
 const BLANK:string = "_____________";
 
-const Question:FC<QuestionProps> = ({currentQuestion,currentQuestionIndex,totalQustions,nextQuestionHandler}) => {
+const Question:FC<QuestionProps> = ({currentQuestion,currentQuestionIndex,totalQuestions,nextQuestionHandler}) => {
     const [currQuestion,setCurrQuestion] = useState<IQuestion |null>(null)
     const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
     const [unselectOptions, setUnSelectedOptions] = useState<string[]>([]);
@@ -38,22 +39,24 @@ const Question:FC<QuestionProps> = ({currentQuestion,currentQuestionIndex,totalQ
         setUnSelectedOptions(prev => [...prev, option]);
     };
 
-    const questionSubmitHandlerAndFetchNextQuestion = () => {
-        // Create a response object with user-selected options
-        const finalAns:UserResponse = {
-            ...currentQuestion,
-            userSelectedOptions:selectedOptions
+    const questionSubmitHandlerAndFetchNextQuestion = async () => {
+        try {
+          // Post selected options
+        //   while making axios request to json-server it's hard reload the complete page
+        //   await axios.post("http://localhost:3001/responses", selectedOptions);
+        submitResponse(selectedOptions);
         }
-    
-        // Push the response to finalScore array
-        finalScore.push(finalAns);
-        console.log(finalScore);
-    
-        // Fetch the next question or jump to the next question
-        nextQuestionHandler();
-    }
+        finally{
+            // Move to the next question
+          nextQuestionHandler();
+        }
+      }
 
     useEffect(() => {
+        if(currentQuestionIndex === 0){
+            // if user refresh the page then reset the responses array to empty in sessionStorage
+            sessionStorage.setItem("user-response",JSON.stringify([]));
+        }
         setCurrQuestion(currentQuestion);
         setUnSelectedOptions(currentQuestion?.options || []);
         setSelectedOptions([]); // CLEAR previous selected options for the next question
@@ -114,8 +117,9 @@ const Question:FC<QuestionProps> = ({currentQuestion,currentQuestionIndex,totalQ
 
             {/* next question of finish the test */}
             <div className="flex justify-end">
-            {currentQuestionIndex + 1 < totalQustions ? (
+            {currentQuestionIndex + 1 < totalQuestions ? (
                 <button
+                type="button"
                 className={`p-3 md:p-5 border-2 rounded-md border-gray-400
                     ${unselectOptions.length > 0 
                     ? "text-gray-400 border-gray-400 cursor-not-allowed" 
@@ -129,6 +133,7 @@ const Question:FC<QuestionProps> = ({currentQuestion,currentQuestionIndex,totalQ
                 </button>
             ) : (
                 <button
+                type="button"
                 className={`px-4 py-2 border-2 rounded-md border-gray-400 
                     ${unselectOptions.length > 0 
                     ? "text-gray-400 border-gray-400 cursor-not-allowed" 
