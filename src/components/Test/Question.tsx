@@ -139,7 +139,10 @@ const Question:FC<QuestionProps> = ({currentQuestion,currentQuestionIndex,totalQ
                     ? "text-gray-400 border-gray-400 cursor-not-allowed" 
                     : "bg-blue-600 text-white cursor-pointer"}`}
                 disabled={unselectOptions.length > 0}
-                onClick={()=> navigate("/result")}
+                onClick={() => {
+                    questionSubmitHandlerAndFetchNextQuestion();
+                    navigate("/result");
+                  }}                  
                 >
                 <span 
                     className={`${unselectOptions.length > 0 ? 'opacity-50' : ''}`}

@@ -5,7 +5,6 @@ import Test from "./pages/Test"
 import Result from "./pages/Result"
 
 function App() {
-
   return (
     <div>
     <BrowserRouter>
