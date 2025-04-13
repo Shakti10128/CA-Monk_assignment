@@ -2,6 +2,10 @@ import axios from "axios";
 import { useEffect, useState, useCallback } from "react";
 import toast from "react-hot-toast";
 import QuestionScreen from "../components/Test/QuestionScreen";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+
+
 
 export interface IQuestion {
   questionId: string;
@@ -15,13 +19,12 @@ export interface IQuestion {
 const Test = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<IQuestion[]>([]);
-
   // Memoized fetch function
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:3000/data");
-      setData(response.data.questions);
+      const response = await axios.get(`${backendUrl}`);
+      setData(response.data?.data?.questions);
     } catch (error) {
       console.log("error while fetching the questions", error);
       toast.error("Failed to load questions");
@@ -41,7 +44,7 @@ const Test = () => {
 
   return (
     <div className="h-screen">
-      {data.length > 0 && (
+      {data?.length > 0 && (
         <QuestionScreen questions={data} />
       )}
     </div>
