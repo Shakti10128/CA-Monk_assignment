@@ -39,7 +39,9 @@ const Test = () => {
 
 
   if (loading) {
-    return <div>loading...</div>;
+    return <div className="h-screen w-screen flex justify-center items-center">
+      <p>loading...</p>
+    </div>
   }
 
   return (
