@@ -4,7 +4,6 @@ import axios from "axios";
 import FeedbackQestion from "../components/feedback/FeedbackQestion";
 import { HiArrowLeft } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 
 
@@ -40,8 +39,8 @@ const Result = () => {
   
   const fetchData = useCallback(async () => {
     try {
-      const response = await axios.get(backendUrl);
-      setQuestions(response.data?.data?.questions);
+      const response = await axios.get("http://localhost:3000/data");
+      setQuestions(response.data.questions);
     } catch (error) {
       console.log("error while fetching the questions", error);
     }
